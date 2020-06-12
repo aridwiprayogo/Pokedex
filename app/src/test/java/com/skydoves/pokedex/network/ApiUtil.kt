@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-package com.skydoves.pokedex.persistence
+package com.skydoves.pokedex.network
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.skydoves.pokedex.model.Pokemon
+import okhttp3.Request
+import okio.Timeout
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-@Dao
-interface PokemonDao {
+object ApiUtil {
 
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insertPokemonList(pokemonList: List<Pokemon>)
-
-  @Query("SELECT * FROM Pokemon WHERE page = :page_")
-  fun getPokemonList(page_: Int): List<Pokemon>
+  fun <T> getCall(data: T) = object : Call<T> {
+    override fun enqueue(callback: Callback<T>) = Unit
+    override fun isExecuted() = false
+    override fun clone(): Call<T> = this
+    override fun isCanceled() = false
+    override fun cancel() = Unit
+    override fun request(): Request = Request.Builder().build()
+    override fun execute(): Response<T> = Response.success(data)
+    override fun timeout(): Timeout = Timeout.NONE
+  }
 }

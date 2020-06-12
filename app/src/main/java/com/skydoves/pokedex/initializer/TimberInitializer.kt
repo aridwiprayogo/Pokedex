@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package com.skydoves.pokedex.persistence
+package com.skydoves.pokedex.initializer
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.skydoves.pokedex.model.Pokemon
+import android.content.Context
+import androidx.startup.Initializer
+import com.skydoves.pokedex.BuildConfig
+import timber.log.Timber
 
-@Dao
-interface PokemonDao {
+class TimberInitializer : Initializer<Unit> {
 
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insertPokemonList(pokemonList: List<Pokemon>)
+  override fun create(context: Context) {
+    if (BuildConfig.DEBUG) {
+      Timber.plant(Timber.DebugTree())
+    }
+    Timber.d("TimberInitializer is initialized.")
+  }
 
-  @Query("SELECT * FROM Pokemon WHERE page = :page_")
-  fun getPokemonList(page_: Int): List<Pokemon>
+  override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }

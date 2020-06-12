@@ -14,20 +14,27 @@
  * limitations under the License.
  */
 
-package com.skydoves.pokedex.persistence
+package com.skydoves.pokedex.utils
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
 import com.skydoves.pokedex.model.Pokemon
+import com.skydoves.pokedex.model.PokemonInfo
 
-@Dao
-interface PokemonDao {
+object MockUtil {
 
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insertPokemonList(pokemonList: List<Pokemon>)
+  fun mockPokemon() = Pokemon(
+    page = 0,
+    name = "bulbasaur",
+    url = "https://pokeapi.co/api/v2/pokemon/1/"
+  )
 
-  @Query("SELECT * FROM Pokemon WHERE page = :page_")
-  fun getPokemonList(page_: Int): List<Pokemon>
+  fun mockPokemonList() = listOf(mockPokemon())
+
+  fun mockPokemonInfo() = PokemonInfo(
+    id = 1,
+    name = "bulbasaur",
+    height = 7,
+    weight = 69,
+    experience = 60,
+    types = emptyList()
+  )
 }

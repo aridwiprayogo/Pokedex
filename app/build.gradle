@@ -29,6 +29,7 @@ android {
         versionCode versions.versionCode
         versionName versions.versionName
         vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "com.skydoves.pokedex.AppTestRunner"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -42,6 +43,9 @@ android {
     }
     androidExtensions {
         experimental = true
+    }
+    lintOptions {
+        abortOnError false
     }
     sourceSets {
         androidTest.java.srcDirs += "src/test-common/java"
@@ -85,20 +89,26 @@ dependencies {
     kapt "androidx.room:room-compiler:$versions.roomVersion"
     testImplementation "androidx.arch.core:core-testing:$versions.archCompomentVersion"
 
+    // startup
+    implementation "androidx.startup:startup-runtime:$versions.startupVersion"
+
     // dagger
     implementation "com.google.dagger:dagger:$versions.dagger"
     implementation "com.google.dagger:hilt-android:$versions.daggerHiltAndroidVersion"
+    implementation "com.google.dagger:hilt-android-testing:$versions.daggerHiltAndroidVersion"
     implementation "androidx.hilt:hilt-common:$versions.daggerHiltVersion"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$versions.daggerHiltVersion"
     kapt "com.google.dagger:dagger-compiler:$versions.dagger"
     kapt "com.google.dagger:hilt-android-compiler:$versions.daggerHiltAndroidVersion"
     kapt "androidx.hilt:hilt-compiler:$versions.daggerHiltVersion"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$versions.daggerHiltAndroidVersion"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$versions.daggerHiltAndroidVersion"
 
     // network
     implementation "com.github.skydoves:sandwich:$versions.sandwichVersion"
     implementation "com.squareup.retrofit2:retrofit:$versions.retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttpVersion"
-    testImplementation "com.squareup.okhttp3:mockwebserver:$versions.mockWebServerVersion"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttpVersion"
 
     // moshi
     implementation "com.squareup.moshi:moshi-kotlin:$versions.moshiVersion"
@@ -136,10 +146,14 @@ dependencies {
 
     // unit test
     testImplementation "junit:junit:$versions.junitVersion"
-    testImplementation "androidx.test:core:$versions.androidxTest"
-    testImplementation "org.robolectric:robolectric:$versions.robolectricVersion"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.mockitoKotlinVersion"
     testImplementation "org.mockito:mockito-inline:$versions.mockitoInlineVersion"
+    testImplementation "org.robolectric:robolectric:$versions.robolectricVersion"
+    androidTestImplementation "androidx.test:core:$versions.androidxTest"
+    androidTestImplementation "com.google.truth:truth:$versions.truthVersion"
+    androidTestImplementation "androidx.test.ext:junit:$versions.androidxTestJunit"
+    androidTestImplementation "com.android.support.test:runner:$versions.androidTestRunner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espressoVersion"
 }
 
 apply from: '../spotless.gradle'

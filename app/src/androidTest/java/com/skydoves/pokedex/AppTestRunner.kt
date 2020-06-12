@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package com.skydoves.pokedex.persistence
+package com.skydoves.pokedex
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.skydoves.pokedex.model.Pokemon
+import android.app.Application
+import android.content.Context
+import androidx.test.runner.AndroidJUnitRunner
+import dagger.hilt.android.testing.HiltTestApplication
 
-@Dao
-interface PokemonDao {
-
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insertPokemonList(pokemonList: List<Pokemon>)
-
-  @Query("SELECT * FROM Pokemon WHERE page = :page_")
-  fun getPokemonList(page_: Int): List<Pokemon>
+@Suppress("unused")
+class AppTestRunner : AndroidJUnitRunner() {
+  override fun newApplication(
+    cl: ClassLoader?,
+    className: String?,
+    context: Context?
+  ): Application = super.newApplication(cl, HiltTestApplication::class.java.name, context)
 }
